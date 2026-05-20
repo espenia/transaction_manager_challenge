@@ -10,6 +10,43 @@
     "description" : "Scope local"
   } ],
   "paths" : {
+    "/transaction/{transactionId}" : {
+      "put" : {
+        "tags" : [ "transaction-controller" ],
+        "operationId" : "transactions",
+        "parameters" : [ {
+          "name" : "transactionId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpsertTransactionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ping" : {
       "get" : {
         "tags" : [ "ping-controller" ],
@@ -29,5 +66,24 @@
       }
     }
   },
-  "components" : { }
+  "components" : {
+    "schemas" : {
+      "UpsertTransactionRequest" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "parent_id" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      }
+    }
+  }
 }
