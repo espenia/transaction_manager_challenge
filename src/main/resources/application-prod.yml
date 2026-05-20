@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/twitter_challenge_prod}
+      database: ${MONGODB_DATABASE:twitter_challenge_prod}
+

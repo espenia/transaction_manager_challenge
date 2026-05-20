@@ -1,0 +1,33 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "twitter-challange-espenia",
+    "description" : "@project.description@",
+    "version" : "@project.version@"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080",
+    "description" : "Scope local"
+  } ],
+  "paths" : {
+    "/ping" : {
+      "get" : {
+        "tags" : [ "ping-controller" ],
+        "operationId" : "ping",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : { }
+}

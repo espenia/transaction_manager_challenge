@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      database: twitter_challenge_test
+  embedded:
+    mongodb:
+      port: 27019

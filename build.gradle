@@ -1,0 +1,84 @@
+plugins {
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'java'
+}
+
+group = 'twitter.challenge.espenia'
+version = '0.0.1-SNAPSHOT'
+
+def caffeineVersion = '3.1.8'
+def newRelicVersion = '8.0.1'
+def commonsIoVersion = '2.17.0'
+def jakartaServletApiVersion = '6.0.0'
+def jaxbApiVersion = '2.3.1'
+def starterWebmvcUiVersion = '2.1.0'
+def systemStubsJupiterVersion = '2.0.1'
+def wiremockVersion = '3.10.0'
+def uuidGeneratorVersion = '5.1.0'
+def mapstructVersion = '1.6.3'
+def archUnitVersion =  '1.3.0'
+
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+dependencies {
+	// Internal application dependencies
+
+	// External application dependencies
+	compileOnly("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
+
+	implementation("com.fasterxml.jackson.module:jackson-module-blackbird")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	implementation("com.fasterxml.uuid:java-uuid-generator:$uuidGeneratorVersion")
+	implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
+	implementation("com.newrelic.agent.java:newrelic-api:$newRelicVersion")
+	implementation("commons-io:commons-io:$commonsIoVersion")
+	implementation("jakarta.servlet:jakarta.servlet-api:$jakartaServletApiVersion")
+	implementation("javax.xml.bind:jaxb-api:$jaxbApiVersion")	
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("org.springframework.boot:spring-boot-starter-jetty")	
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$starterWebmvcUiVersion")
+	implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+	implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.20.0")
+	implementation("de.flapdoodle.embed:de.flapdoodle.embed.process:4.14.0")
+
+
+	runtimeOnly("com.h2database:h2")	// Test dependencies for all projects
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("uk.org.webcompere:system-stubs-jupiter:$systemStubsJupiterVersion")
+	testImplementation("org.wiremock:wiremock-standalone:$wiremockVersion")
+	testImplementation("com.tngtech.archunit:archunit-junit5:$archUnitVersion")
+	testImplementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+}
+
+test {
+	useJUnitPlatform()
+
+	// Always run tests, even when nothing changed.
+	dependsOn 'cleanTest'
+
+	// Show test results.
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'twitter.challenge.espenia.Application'
+		)
+	}
+}
+
