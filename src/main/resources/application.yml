@@ -13,14 +13,14 @@ server:
     min-response-size: 1024 # Minimum "Content-Length" value that is required for compression to be performed.
 
 springdoc:
-  packages-to-scan: twitter.challenge.espenia.entrypoint
+  packages-to-scan: transactionmanager.challange.entrypoint
   show-actuator: true
   swagger-ui:
     operations-sorter: alpha
     disable-swagger-default-url: true
 
 app:
-  title: twitter-challange-espenia
+  title: transaction-manager-challange
   description: '@project.description@'
   version: '@project.version@'
 

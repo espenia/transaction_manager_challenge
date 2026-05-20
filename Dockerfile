@@ -21,11 +21,11 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy the compiled Spring Boot JAR file into the container from the build stage
-COPY --from=build /app/build/libs/split-travel-0.0.1-SNAPSHOT.jar /app/split-travel-application.jar
+COPY --from=build /app/build/libs/transaction-manager-0.0.1-SNAPSHOT.jar /app/transaction-manager-0.0.1-SNAPSHOT.jar
 
 
 # Expose the port your Spring Boot application is running on (default is 8080)
 EXPOSE 8080
 
 # Command to run your Spring Boot application
-CMD ["java", "-jar", "/app/split-travel-application.jar"]
+CMD ["java", "-jar", "/app/transaction-manager-0.0.1-SNAPSHOT.jar"]

@@ -10,3 +10,7 @@ migrations/
 .DS_Store
 
 Challenge Backend..pdf
+
+bin/
+
+.vscode/
