@@ -25,9 +25,9 @@ public class TransactionController {
     // the challenge requires to return different responses for created and updated transactions, so I implemented it as required, 
     // but in a real world scenario I would return the same response for both cases, with the transaction details, 
     // and use the status code to differentiate between created and updated.
-    @PutMapping("/{transactionId}")
+    @PutMapping("/{transaction_id}")
     public ResponseEntity<?> transactions(
-            @PathVariable Long transactionId,
+            @PathVariable("transaction_id") Long transactionId,
             @RequestBody UpsertTransactionRequest request) {
 
         UpsertTransactionResult result = upsertTransactionUseCase.execute(
