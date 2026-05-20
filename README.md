@@ -165,7 +165,7 @@ Returns the sum of amounts for the transaction with the given ID and all its des
 
 **Response `404 Not Found`** — transaction does not exist.
 
-> Swagger UI available at `http://localhost:8080/swagger-ui.html`
+> Swagger UI available at `http://localhost:8090/swagger-ui.html` (local profile) or `http://localhost:8080/swagger-ui.html` (Docker)
 
 ---
 
@@ -181,7 +181,7 @@ Returns the sum of amounts for the transaction with the given ID and all its des
 ./gradlew bootRun
 ```
 
-The server starts on **port 8080** by default.
+The server starts on **port 8090** when using the `local` profile (default), or **port 8080** otherwise.
 
 ### With a specific profile
 
@@ -227,38 +227,39 @@ Test reports are generated at `build/reports/tests/test/index.html`.
 
 The `Dockerfile` uses a **multi-stage build** to keep the final image lean:
 
-1. **Build stage** — copies source, runs `./gradlew build -x test` inside an `openjdk:21-jdk-slim` image.
-2. **Runtime stage** — copies only the compiled JAR into a fresh `openjdk:21-jdk-slim` image.
+1. **Build stage** — copies source, runs `./gradlew build -x test` inside an `eclipse-temurin:21-jdk-jammy` image.
+2. **Runtime stage** — copies only the compiled JAR into a fresh `eclipse-temurin:21-jdk-jammy` image.
 
-### Run with Docker Compose (recommended)
-
-```bash
-docker compose up --build
-```
-
-To run in the background:
+### Run with Docker Compose / Podman Compose (recommended)
 
 ```bash
+# Docker
 docker compose up --build -d
+
 ```
 
 To stop:
 
 ```bash
 docker compose down
+
 ```
 
 The API will be available at `http://localhost:8080`.
 
-### Build and run manually with Docker
+### Build and run manually
 
 ```bash
+# Docker
 docker build -t transaction-manager .
-docker run -p 8080:8080 transaction-manager
+docker run -p 8080:8090 transaction-manager
+
 ```
 
 ### Run with environment variables (manual)
 
 ```bash
-docker run -p 8080:8080 -e SCOPE_SUFFIX=prod transaction-manager
+# Docker
+docker run -p 8080:8090 -e SCOPE_SUFFIX=prod transaction-manager
+
 ```
