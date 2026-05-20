@@ -34,4 +34,11 @@ public class InMemoryTransactionRepository implements TransactionRepository {
     public List<TransactionEntity> findAll() {
         return new ArrayList<>(store.values());
     }
+
+    @Override
+    public List<TransactionEntity> findByType(String type) {
+        return store.values().stream()
+                .filter(e -> type.equals(e.getType()))
+                .collect(java.util.stream.Collectors.toList());
+    }
 }

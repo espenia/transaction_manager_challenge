@@ -1,6 +1,8 @@
 package transactionmanager.challange.infra.gateway.impl;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,20 @@ public class TransactionGatewayImpl implements TransactionGateway {
     @Override
     public Optional<Transaction> findById(Long id) {
         return transactionRepository.findById(id).map(this::toDomain);
+    }
+
+    @Override
+    public List<Long> findIdsByType(String type) {
+        return transactionRepository.findByType(type).stream()
+                .map(TransactionEntity::getId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Transaction> findAll() {
+        return transactionRepository.findAll().stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
     }
 
     private TransactionEntity toEntity(Transaction transaction) {

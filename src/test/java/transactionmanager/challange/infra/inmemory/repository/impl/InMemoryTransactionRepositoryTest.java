@@ -64,4 +64,24 @@ class InMemoryTransactionRepositoryTest extends UnitTest {
         assertTrue(all.stream().anyMatch(e -> e.getId().equals(50005L)));
         assertTrue(all.stream().anyMatch(e -> e.getId().equals(50006L)));
     }
+
+    @Test
+    void findByType_returnsOnlyMatchingEntities() {
+        repository.save(Factory.aTransactionEntity(50007L).toBuilder().type("CREDIT").build());
+        repository.save(Factory.aTransactionEntity(50008L).toBuilder().type("DEBIT").build());
+        repository.save(Factory.aTransactionEntity(50009L).toBuilder().type("CREDIT").build());
+
+        List<TransactionEntity> result = repository.findByType("CREDIT");
+
+        assertTrue(result.stream().anyMatch(e -> e.getId().equals(50007L)));
+        assertTrue(result.stream().anyMatch(e -> e.getId().equals(50009L)));
+        assertTrue(result.stream().noneMatch(e -> e.getId().equals(50008L)));
+    }
+
+    @Test
+    void findByType_whenNoneMatch_returnsEmptyList() {
+        List<TransactionEntity> result = repository.findByType("NONEXISTENT");
+
+        assertTrue(result.isEmpty());
+    }
 }

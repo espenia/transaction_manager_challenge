@@ -12,4 +12,6 @@ public interface TransactionRepository {
     Optional<TransactionEntity> findById(Long id);
 
     List<TransactionEntity> findAll();
+
+    List<TransactionEntity> findByType(String type);
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -68,5 +69,49 @@ class TransactionGatewayImplTest extends UnitTest {
 
         // Then
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void findIdsByType_returnsMappedIds() {
+        // Given
+        List<TransactionEntity> entities = List.of(
+                Factory.aTransactionEntity(10L),
+                Factory.aTransactionEntity(20L));
+        when(transactionRepository.findByType("DEBIT")).thenReturn(entities);
+
+        // When
+        List<Long> result = gateway.findIdsByType("DEBIT");
+
+        // Then
+        assertEquals(List.of(10L, 20L), result);
+    }
+
+    @Test
+    void findIdsByType_whenNoneFound_returnsEmptyList() {
+        // Given
+        when(transactionRepository.findByType("UNKNOWN")).thenReturn(List.of());
+
+        // When
+        List<Long> result = gateway.findIdsByType("UNKNOWN");
+
+        // Then
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void findAll_returnsMappedDomainList() {
+        // Given
+        List<TransactionEntity> entities = List.of(
+                Factory.aTransactionEntity(1L),
+                Factory.aTransactionEntity(2L));
+        when(transactionRepository.findAll()).thenReturn(entities);
+
+        // When
+        List<transactionmanager.challange.core.model.Transaction> result = gateway.findAll();
+
+        // Then
+        assertEquals(2, result.size());
+        assertTrue(result.stream().anyMatch(t -> t.getId().equals(1L)));
+        assertTrue(result.stream().anyMatch(t -> t.getId().equals(2L)));
     }
 }
