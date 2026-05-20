@@ -1,0 +1,16 @@
+
+.idea/
+
+.gradle/
+
+build/
+
+migrations/
+
+.DS_Store
+
+Challenge Backend..pdf
+
+bin/
+
+.vscode/
