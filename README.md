@@ -30,7 +30,7 @@ src/main/java/transactionmanager/challange/
 ├── core/                        # Domain — no framework dependencies
 │   ├── model/                   # Domain entities (Transaction, TransactionType, UpsertTransactionResult)
 │   ├── gateway/                 # Output port interfaces (TransactionGateway)
-│   ├── usecase/                 # Application use cases (UpsertTransactionUseCase)
+│   ├── usecase/                 # Application use cases (UpsertTransactionUseCase, GetTransactionsByTypeUseCase, GetTransactionSumUseCase)
 │   └── exception/               # Domain exceptions
 ├── infra/                       # Adapters — implements core ports
 │   ├── gateway/impl/            # TransactionGatewayImpl — maps domain ↔ entity
@@ -131,6 +131,40 @@ Creates or updates a transaction identified by `transactionId`.
 }
 ```
 
+---
+
+### `GET /transaction/types/{type}`
+Returns a list of IDs of all transactions matching the given `type`.
+
+**Path parameter**
+
+| Param | Type | Description |
+|---|---|---|
+| `type` | `String` | Transaction type to filter by (e.g. `DEBIT`, `CREDIT`) |
+
+**Response `200 OK`**
+```json
+[1, 2, 3]
+```
+
+---
+
+### `GET /transaction/sum/{transactionId}`
+Returns the sum of amounts for the transaction with the given ID and all its descendants (linked transitively via `parent_id`). Returns `404` if the transaction does not exist.
+
+**Path parameter**
+
+| Param | Type | Description |
+|---|---|---|
+| `transactionId` | `Long` | Root transaction ID |
+
+**Response `200 OK`**
+```json
+{ "sum": 175.0 }
+```
+
+**Response `404 Not Found`** — transaction does not exist.
+
 > Swagger UI available at `http://localhost:8080/swagger-ui.html`
 
 ---
@@ -176,9 +210,11 @@ Run a specific test class:
 | Test class | Type | What it covers |
 |---|---|---|
 | `UpsertTransactionUseCaseTest` | Unit (Spring + `@MockBean`) | Create vs update logic, field propagation |
-| `TransactionGatewayImplTest` | Unit (Spring + `@MockBean`) | Domain ↔ entity mapping |
-| `InMemoryTransactionRepositoryTest` | Unit (Spring) | Save, find, id generation |
-| `TransactionControllerTest` | Integration (`TestRestTemplate`) | `PUT /transaction/{id}` — 201 on create, 200 on update |
+| `GetTransactionsByTypeUseCaseTest` | Unit (Spring + `@MockBean`) | Filter by type, empty result |
+| `GetTransactionSumUseCaseTest` | Unit (Spring + `@MockBean`) | Subtree sum, nested children, not-found, excludes siblings |
+| `TransactionGatewayImplTest` | Unit (Spring + `@MockBean`) | Domain ↔ entity mapping, id projection by type, findAll |
+| `InMemoryTransactionRepositoryTest` | Unit (Spring) | Save, find, id generation, filter by type |
+| `TransactionControllerTest` | Integration (`TestRestTemplate`) | `PUT /transaction/{id}` — 201/200; `GET /transaction/types/{type}` — id list; `GET /transaction/sum/{id}` — sum/404 |
 | `ControllerExceptionHandlerTest` | Integration | Global error handler |
 | `ScopeUtilTest` | Unit | Scope/environment resolution |
 | `ArchitectureTest` | Architecture | Hexagonal layer dependency rules |
