@@ -9,9 +9,7 @@ public interface TransactionGateway {
 
     Transaction save(Transaction transaction);
 
-    Optional<Transaction> findById(Long id);
-
+    Optional<Transaction> findById2(Long id);
     List<Long> findIdsByType(String type);
-
     List<Transaction> findAll();
 }
